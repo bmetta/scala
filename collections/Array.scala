@@ -59,4 +59,16 @@ object Array extends App {
    * def collectFirst[B](pf: PartialFunction[T, B]): Option[B]
    */
   d.collectFirst(pf).foreach(println) // 0
+
+  /**
+   * def combinations(n: Int): collection.Iterator[Array[T]]
+   */
+  val str = "abbbc"
+  str.combinations(2).foreach(println)
+
+  /**
+   * def contains[A1 >: A](elem: A1): Boolean
+   */
+  println(a.contains(5)) // true
+  println(a.contains(6)) // false
 }
