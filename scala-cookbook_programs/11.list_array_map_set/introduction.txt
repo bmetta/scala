@@ -1,0 +1,25 @@
+List
+  immutable
+  implemented as linked list. It has head, tail and isEmpty methods
+  involve recursive algorithms
+ListBuffer
+  mutable
+
+Array (and ArrayBuffer)
+  mutable
+  indexed collections of values
+  Array size cant change if it is set
+
+Map
+  immutable
+  collection of key/value pairs
+  
+Set
+  both mutable and immutable versions
+  contains only unique elements
+  duplicate values ignores silently
+
+Queue
+Stack
+Range
+Stream
