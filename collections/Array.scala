@@ -48,6 +48,42 @@ object Array extends App {
   val isEqual = c.canEqual(a) // true
   println(isEqual)
 
+  /**************************************************************************
+   * Map operations map, flatMap, and collect, which produce a new collection
+   * by applying some function to collection elements.
+   */
+
+  /**
+   * def map[B](f: (A) => B): Array[B]
+   *
+   * Builds a new collection by applying a function to all elements of
+   * this array
+   */
+  val fruits = Array("apple", "banana", "orange")
+  val fruitsInCaps = fruits.map(_.toUpperCase) // Array[String]("APPLE", "BANANA", "ORANGE")
+  println(fruitsInCaps.mkString(", "))
+
+  /**
+   * def flatMap[B](f: (A) => GenTraversableOnce[B]): Array[B]
+   */
+  val fruitsInChars = fruits.flatMap(_.toUpperCase) // Array[Char](A,P,P,L,E,B,A,N,A,N,A,O,R,A,N,G,E)
+  println(fruitsInChars.mkString(", "))
+
+  // Option/Some/None classes
+  def toInt(s: String): Option[Int] = {
+    try {
+      Some(Integer.parseInt(s.trim))
+    } catch {
+      case e: Exception => None
+    }
+  }
+  val strings = Array("1", "2", "foo", "3", "bar")
+  val stringsMap = strings.map(toInt) // Array(Some(1), Some(2), None, Some(3), None)
+  val stringsFlatMap = strings.flatMap(toInt) // Array(1, 2, 3)
+  println(stringsMap.mkString(", "))
+  println(stringsFlatMap.mkString(", "))
+  println(stringsFlatMap.sum) // 6
+
   /**
    * def collect[B](pf: PartialFunction[A, B]): Array[B]
    *
@@ -61,11 +97,21 @@ object Array extends App {
     case Some(s: String) => s.toInt
   }
   d.collect(pf).foreach(println) // 0 1 2 3 4 5
+  /************************************************************************/
 
-  /**
-   * def collectFirst[B](pf: PartialFunction[T, B]): Option[B]
+  /**************************************************************************
+   * Conversions toArray, toList, toIterable, toSeq, toIndexedSeq, toStream,
+   * toSet, toMap, which turn a Traversable
    */
-  d.collectFirst(pf).foreach(println) // 0
+  val numbers = Array(1, 2, 3, 4, 5)
+  val arrayOfNums = numbers.toArray
+  println(arrayOfNums.mkString(", "))
+
+  val listOfNums = numbers.toList
+  println(listOfNums.mkString(", "))
+
+  val listOfIter = numbers.toIterable
+  /************************************************************************/
 
   /**
    * def combinations(n: Int): collection.Iterator[Array[T]]
@@ -188,37 +234,6 @@ object Array extends App {
   println(intVals.mkString(", "))
 
   /**
-   * def map[B](f: (A) => B): Array[B]
-   *
-   * Builds a new collection by applying a function to all elements of
-   * this array
-   */
-  val fruits = Array("apple", "banana", "orange")
-  val fruitsInCaps = fruits.map(_.toUpperCase) // Array[String]("APPLE", "BANANA", "ORANGE")
-  println(fruitsInCaps.mkString(", "))
-
-  /**
-   * def flatMap[B](f: (A) => GenTraversableOnce[B]): Array[B]
-   */
-  val fruitsInChars = fruits.flatMap(_.toUpperCase) // Array[Char](A,P,P,L,E,B,A,N,A,N,A,O,R,A,N,G,E)
-  println(fruitsInChars.mkString(", "))
-
-  // Option/Some/None classes
-  def toInt(s: String): Option[Int] = {
-    try {
-      Some(Integer.parseInt(s.trim))
-    } catch {
-      case e: Exception => None
-    }
-  }
-  val strings = Array("1", "2", "foo", "3", "bar")
-  val stringsMap = strings.map(toInt) // Array(Some(1), Some(2), None, Some(3), None)
-  val stringsFlatMap = strings.flatMap(toInt) // Array(1, 2, 3)
-  println(stringsMap.mkString(", "))
-  println(stringsFlatMap.mkString(", "))
-  println(stringsFlatMap.sum) // 6
-
-  /**
    * def groupBy[K](f: (T) ⇒ K): Map[K, Array[T]]
    *
    * Partitions this mutable indexed sequence into a map of mutable indexed
@@ -245,9 +260,9 @@ object Array extends App {
    * Partitions this mutable indexed sequence in two mutable indexed
    * sequences according to a predicate.
    */
-  val numbers = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-  // numbers: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-  val parts = numbers.partition(_ % 2 == 0)
+  val numbers1 = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  // numbers1: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  val parts = numbers1.partition(_ % 2 == 0)
   // parts: (Array[Int], Array[Int]) = (Array(2, 4, 6, 8, 10),Array(1, 3, 5, 7, 9))
   println(parts._1.mkString(", "))
   println(parts._2.mkString(", "))
