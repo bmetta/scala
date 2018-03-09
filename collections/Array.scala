@@ -97,21 +97,63 @@ object Array extends App {
     case Some(s: String) => s.toInt
   }
   d.collect(pf).foreach(println) // 0 1 2 3 4 5
-  /************************************************************************/
 
   /**************************************************************************
    * Conversions toArray, toList, toIterable, toSeq, toIndexedSeq, toStream,
    * toSet, toMap, which turn a Traversable
    */
-  val numbers = Array(1, 2, 3, 4, 5)
+  val numbers = Array(1, 2, 3, 4, 5)  // numbers: Array[Int]
+  println(numbers.mkString(", "))
   val arrayOfNums = numbers.toArray
   println(arrayOfNums.mkString(", "))
 
-  val listOfNums = numbers.toList
-  println(listOfNums.mkString(", "))
+  val listOfNums = numbers.toList // listOfNums: List[Int] = List(1, 2, 3, 4, 5)
+  println(listOfNums)
 
-  val listOfIter = numbers.toIterable
-  /************************************************************************/
+  val iterable = numbers.toIterable // iterable: Iterable[Int] = WrappedArray(1, 2, 3, 4, 5)
+  println(iterable)
+
+  val seq = numbers.toSeq // seq: Seq[Int] = WrappedArray(1, 2, 3, 4, 5)
+  println(seq)
+
+  val indexedSeq = numbers.toIndexedSeq // indexedSeq: IndexedSeq[Int] = Vector(1, 2, 3, 4, 5)
+  println(indexedSeq)
+
+  val stream = numbers.toStream // stream: Stream[Int] = Stream(1, ?)
+  println(stream)
+
+  val set = numbers.toSet // set: Set[Int] = Set(5, 1, 2, 3, 4)
+  println(set)
+
+  val pairs = Array((1, "a"), (2, "b"), (3, "c"))
+  val map = pairs.toMap // map: Map[Int, String] = Map(1 -> a, 2 -> b, 3 -> c)
+  println(map)
+
+  /**************************************************************************
+   * Copying operations copyToBuffer and copyToArray. As their names imply, these
+   * copy collection elements to a buffer or array, respectively.
+   */
+  /**
+   * def copyToArray(xs: Array[A], start: Int, len: Int): Unit
+   * def copyToArray(xs: Array[A], start: Int): Unit
+   * def copyToArray(xs: Array[A]): Unit
+   */
+  val a1 = new Array[Int](6)
+  a.copyToArray(a1, 2, 3) // 0 0 1 2 3 0
+  println(a1.mkString(", "))
+
+  /**
+   * def copyToBuffer[B >: A](dest: Buffer[B]): Unit
+   */
+  val buff = new collection.mutable.ArrayBuffer[Int]()
+  a.copyToBuffer(buff)
+  println(buff.mkString(", "))
+
+  /**************************************************************************
+   * Element retrieval operations head, last, headOption, lastOption, and find
+   */
+  // val a = Array(1, 2, 3, 4, 5)
+  println(a.head)
 
   /**
    * def combinations(n: Int): collection.Iterator[Array[T]]
@@ -134,27 +176,6 @@ object Array extends App {
    */
   println(a.containsSlice(Array(1, 2, 3))) // true
   println(a.containsSlice(Array(1, 2, 4))) // false
-
-  /**
-   * def copyToArray(xs: Array[A], start: Int, len: Int): Unit
-   * def copyToArray(xs: Array[A], start: Int): Unit
-   * def copyToArray(xs: Array[A]): Unit
-   */
-  val a1 = new Array[Int](6)
-  a.copyToArray(a1, 2, 3) // 0 0 1 2 3 0
-  println(a1.mkString(", "))
-
-  /**
-   * def copyToBuffer[B >: A](dest: Buffer[B]): Unit
-   */
-  val buff = new collection.mutable.ArrayBuffer[Int]()
-  a.copyToBuffer(buff)
-  println(buff.mkString(", "))
-
-  /**
-   * def corresponds[B](that: GenSeq[B])(p: (T, B) => Boolean): Boolean
-   */
-
 
   /**
    * def count(p: (T) => Boolean): Int
