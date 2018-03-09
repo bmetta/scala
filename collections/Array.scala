@@ -7,10 +7,10 @@
  */
 object Array extends App {
   val a = Array(1, 2, 3, 4, 5)
-  
+
   /**
    * def addString(b: StringBuilder): StringBuilder
-   * 
+   *
    * b        string builder to which elements are appended
    * returns  string builder b to which elements were appended
    */
@@ -52,7 +52,6 @@ object Array extends App {
    * Map operations map, flatMap, and collect, which produce a new collection
    * by applying some function to collection elements.
    */
-
   /**
    * def map[B](f: (A) => B): Array[B]
    *
@@ -154,6 +153,16 @@ object Array extends App {
    */
   // val a = Array(1, 2, 3, 4, 5)
   println(a.head)
+  println(a.headOption)
+  println(a.last)
+  println(a.lastOption)
+  /**
+   * def find(p: (T) ⇒ Boolean): Option[T]
+   * Finds the first element of the mutable indexed sequence satisfying a predicate,
+   * if any.
+   */
+  println(a.find(x => x == 2)) // Some(2)
+  println(a.find(x => x > 2)) // Some(3)
 
   /**
    * def combinations(n: Int): collection.Iterator[Array[T]]
@@ -194,7 +203,7 @@ object Array extends App {
 
   /**
    * def diff(that: collection.Seq[T]): Array[T]
-   * 
+   *
    * Computes the multiset difference between this array and another
    * sequence.
    */
@@ -218,7 +227,7 @@ object Array extends App {
   /**
    * def drop(n: Int): Array[T]
    * Selects all elements except first n ones.
-   * 
+   *
    * def dropRight(n: Int): Array[T]
    * Selects all elements except last n ones.
    *
@@ -267,12 +276,12 @@ object Array extends App {
     case _ => "g4"
   }
   // groups: scala.collection.immutable.Map[String,Array[Int]] =
-  //    Map(g3 -> Array(10, 11, 12, 13, 14), 
-  //        g2 -> Array(5, 6, 7, 8, 9), 
-  //        g1 -> Array(1, 2, 3, 4), 
+  //    Map(g3 -> Array(10, 11, 12, 13, 14),
+  //        g2 -> Array(5, 6, 7, 8, 9),
+  //        g1 -> Array(1, 2, 3, 4),
   //        g4 -> Array(15, 16, 17, 18, 19, 20))
   groups.foreach(group => println(group._1 + " => " + group._2.mkString(", ")))
-  
+
   val mods = (1 to 20).toArray groupBy(_ % 4)
   mods.foreach(mod => println(mod._1 + " => " + mod._2.mkString(", ")))
 
@@ -303,14 +312,14 @@ object Array extends App {
 
   /**
    * def reduce[A1 >: A](op: (A1, A1) => A1): A1
-   *  
+   *
    * Reduces the elements of this mutable indexed sequence using the specified
    * associative binary operator.
    */
   val aoChars = Array("A", "B", "C")
   // aoChars: Array[String] = Array(A, B, C)
   println(aoChars.reduce(_ + _)) // "ABC"
-  
+
   val aoNums = Array(12, 6, 15, 2, 20, 9)
   println(aoNums.reduce(_ min _)) // 2
   println(aoNums.reduce(_ max _)) // 20
