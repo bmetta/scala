@@ -6,34 +6,14 @@
  *  new Array(_length: Int)
  */
 object Array extends App {
-  val a = Array(1, 2, 3, 4, 5)
-
-  /**
-   * def addString(b: StringBuilder): StringBuilder
-   *
-   * b        string builder to which elements are appended
-   * returns  string builder b to which elements were appended
-   */
-  val b = new StringBuilder
-  val aStr = a.addString(b) // 12345
-  println(aStr)
-
-  /**
-   * def addString(b: StringBuilder, sep: String): StringBuilder
-   */
-  val b1 = new StringBuilder
-  val aStr1 = a.addString(b1, ", ") // 1, 2, 3, 4, 5
-  println(aStr1)
-
-  /**
-   * def addString(b: StringBuilder, start: String, sep: String, end: String): StringBuilder
-   */
-  val b2 = new StringBuilder
-  val aStr2 = a.addString(b2, "Array(", ", ", ")") // 1, 2, 3, 4, 5
-  println(aStr2)
+  val a = Array(1, 2, 3, 4, 5) // a: Array[Int] = Array(1, 2, 3, 4, 5)
 
   /**
    * def aggregate[B](z: ⇒> B)(seqop: (B, T) ⇒> B, combop: (B, B) ⇒> B): B
+   * B  type of accumulated results
+   * z  initial value for the accumulated result of the partition
+   * seqop  accumulate results within a partition
+   * combop combine results from different partitions
    */
   val agg = a.aggregate(0) (
     { (acc, value) => acc + value },
@@ -41,27 +21,39 @@ object Array extends App {
   )
   println(agg)  // 15
 
-  /**
-   * def canEqual(that: Any): Boolean
-   */
-  val c = Array(1, 2, 3, 4, 5)
-  val isEqual = c.canEqual(a) // true
-  println(isEqual)
-
   /**************************************************************************
-   * Map operations map, flatMap, and collect, which produce a new collection
-   * by applying some function to collection elements.
+   * Map operations map, flatMap, and collect
+   * Produce a new collection by applying some function to collection elements.
    */
   /**
    * def map[B](f: (A) => B): Array[B]
-   *
-   * Builds a new collection by applying a function to all elements of
-   * this array
+   * B  element type of the returned collection
+   * f  function to apply to each element
+   * Builds a new collection by applying a function to all elements of this array
    */
   val fruits = Array("apple", "banana", "orange")
   val fruitsInCaps = fruits.map(_.toUpperCase) // Array[String]("APPLE", "BANANA", "ORANGE")
   println(fruitsInCaps.mkString(", "))
+  /**
+   * def flatten[U](implicit asTrav: (T) => collection.Traversable[U],
+   *                m: ClassTag[U]): Array[U]
+   * U  Type of row elements
+   * asTrav function that converts elements of this array to rows - arrays of type U
+   * Flattens a two-dimensional array by concatenating all its rows into
+   * a single array.
+   */
+  val aoa = Array(Array(1, 2), Array(3, 4))
+  val aoaToArray = aoa.flatten // Array(1, 2, 3, 4)
+  println(aoaToArray.mkString(", "))
 
+  val aos = Array("Hello", "World")
+  val aoc = aos.flatten // Array[Char](H, e, l, l, o, W, o, r, l, d)
+  println(aoc.mkString(", "))
+
+  val optionVals = Array(Some(1), None, Some(3), None)
+  // optionVals: Array[Option[Int]] = Array(Some(1), None, Some(3), None)
+  val intVals = optionVals.flatten // Array[Int](1, 3)
+  println(intVals.mkString(", "))
   /**
    * def flatMap[B](f: (A) => GenTraversableOnce[B]): Array[B]
    */
@@ -85,7 +77,6 @@ object Array extends App {
 
   /**
    * def collect[B](pf: PartialFunction[A, B]): Array[B]
-   *
    * Builds a new collection by applying a partial function to all elements
    * of this sequence on which the function is defined
    */
@@ -164,6 +155,124 @@ object Array extends App {
   println(a.find(x => x == 2)) // Some(2)
   println(a.find(x => x > 2)) // Some(3)
 
+  /**************************************************************************
+   * Sub-collection retrieval operations tail, init, slice, take, drop, takeWhile,
+   * dropWhile, filter, filterNot, withFilter
+   */
+  /**
+   * def filter(p: (T) ⇒ Boolean): Array[T]
+   * Selects all elements of this mutable indexed sequence which satisfy
+   * a predicate.
+   */
+  val f = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  val fEven = f.filter(_ % 2 == 0) // Array(2, 4, 6, 8, 10)
+  println(fEven.mkString(", "))
+
+  /**************************************************************************
+   * Subdivision operations splitAt, span, partition, groupBy
+   */
+  /**
+   * def groupBy[K](f: (T) ⇒ K): Map[K, Array[T]]
+   *
+   * Partitions this mutable indexed sequence into a map of mutable indexed
+   * sequences according to some discriminator function
+   */
+  val groups = (1 to 20).toArray groupBy {
+    case i if (i < 5)  => "g1"
+    case i if (i < 10) => "g2"
+    case i if (i < 15) => "g3"
+    case _ => "g4"
+  }
+  // groups: scala.collection.immutable.Map[String,Array[Int]] =
+  //    Map(g3 -> Array(10, 11, 12, 13, 14),
+  //        g2 -> Array(5, 6, 7, 8, 9),
+  //        g1 -> Array(1, 2, 3, 4),
+  //        g4 -> Array(15, 16, 17, 18, 19, 20))
+  groups.foreach(group => println(group._1 + " => " + group._2.mkString(", ")))
+
+  val mods = (1 to 20).toArray groupBy(_ % 4)
+  mods.foreach(mod => println(mod._1 + " => " + mod._2.mkString(", ")))
+
+  /**
+   * def partition(p: (T) ⇒ Boolean): (Array[T], Array[T])
+   * Partitions this mutable indexed sequence in two mutable indexed
+   * sequences according to a predicate.
+   */
+  val numbers1 = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  // numbers1: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  val parts = numbers1.partition(_ % 2 == 0)
+  // parts: (Array[Int], Array[Int]) = (Array(2, 4, 6, 8, 10),Array(1, 3, 5, 7, 9))
+  println(parts._1.mkString(", "))
+  println(parts._2.mkString(", "))
+
+  /**************************************************************************
+   * Folds foldLeft, foldRight, /:, :\, reduceLeft, reduceRight
+   */
+  /**
+   * def reduce[A1 >: A](op: (A1, A1) => A1): A1
+   *
+   * Reduces the elements of this mutable indexed sequence using the specified
+   * associative binary operator.
+   */
+  val aoChars = Array("A", "B", "C")
+  // aoChars: Array[String] = Array(A, B, C)
+  println(aoChars.reduce(_ + _)) // "ABC"
+
+  val aoNums = Array(12, 6, 15, 2, 20, 9)
+  println(aoNums.reduce(_ min _)) // 2
+  println(aoNums.reduce(_ max _)) // 20
+  println(aoNums.reduce(_ + _)) // 64
+
+  val peeps = Vector("al", "hannah", "emily", "christina", "aleka")
+  val peepsMax = peeps.reduce((x, y) => if(x.length > y.length) x else y)
+  println(peepsMax)
+
+  /**
+   * def reduceLeft[B >: A](op: (B, T) => B): B
+   * Applies a binary operator to all elements of this mutable indexed sequence,
+   * going left to right.
+   *
+   * def reduceRight[B >: A](op: (T, B) => B): B
+   * Applies a binary operator to all elements of this mutable indexed sequence,
+   * going right to left.
+   */
+  // calculate min value from collection
+  val aoStrs = Array("one", "two", "three")
+  val leftMin = aoStrs.reduceLeft((result, element) =>
+                    if (element.length < result.length) element else result)
+  println(leftMin)
+  val rightMin = aoStrs.reduceRight((element, result) =>
+                    if (element.length < result.length) element else result)
+  println(rightMin)
+
+  /**************************************************************************
+   * String operations mkString, addString, stringPrefix
+   */
+  /**
+   * def addString(b: StringBuilder): StringBuilder
+   *
+   * b        string builder to which elements are appended
+   * returns  string builder b to which elements were appended
+   */
+  val b = new StringBuilder
+  val aStr = a.addString(b) // 12345
+  println(aStr)
+
+  /**
+   * def addString(b: StringBuilder, sep: String): StringBuilder
+   */
+  val b1 = new StringBuilder
+  val aStr1 = a.addString(b1, ", ") // 1, 2, 3, 4, 5
+  println(aStr1)
+
+  /**
+   * def addString(b: StringBuilder, start: String, sep: String, end: String): StringBuilder
+   */
+  val b2 = new StringBuilder
+  val aStr2 = a.addString(b2, "Array(", ", ", ")") // 1, 2, 3, 4, 5
+  println(aStr2)
+  /**************************************************************************/
+
   /**
    * def combinations(n: Int): collection.Iterator[Array[T]]
    */
@@ -225,79 +334,6 @@ object Array extends App {
   println(d1Dist.mkString(", "))
 
   /**
-   * def drop(n: Int): Array[T]
-   * Selects all elements except first n ones.
-   *
-   * def dropRight(n: Int): Array[T]
-   * Selects all elements except last n ones.
-   *
-   * def dropWhile(p: (T) ⇒ Boolean): Array[T]
-   * Drops longest prefix of elements that satisfy a predicate.
-   */
-
-  /**
-   * def filter(p: (T) ⇒ Boolean): Array[T]
-   * Selects all elements of this mutable indexed sequence which satisfy
-   * a predicate.
-   */
-  val f = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-  val fEven = f.filter(_ % 2 == 0) // Array(2, 4, 6, 8, 10)
-  println(fEven.mkString(", "))
-
-  /**
-   * def flatten[U](implicit asTrav: (T) => collection.Traversable[U],
-   *                m: ClassTag[U]): Array[U]
-   *
-   * Flattens a two-dimensional array by concatenating all its rows into
-   * a single array.
-   */
-  val aoa = Array(Array(1, 2), Array(3, 4))
-  val aoaToArray = aoa.flatten // Array(1, 2, 3, 4)
-  println(aoaToArray.mkString(", "))
-
-  val aos = Array("Hello", "World")
-  val aoc = aos.flatten // Array[Char](H, e, l, l, o, W, o, r, l, d)
-  println(aoc.mkString(", "))
-
-  val optionVals = Array(Some(1), None, Some(3), None)
-  val intVals = optionVals.flatten // Array[Int](1, 3)
-  println(intVals.mkString(", "))
-
-  /**
-   * def groupBy[K](f: (T) ⇒ K): Map[K, Array[T]]
-   *
-   * Partitions this mutable indexed sequence into a map of mutable indexed
-   * sequences according to some discriminator function
-   */
-  val groups = (1 to 20).toArray groupBy {
-    case i if (i < 5)  => "g1"
-    case i if (i < 10) => "g2"
-    case i if (i < 15) => "g3"
-    case _ => "g4"
-  }
-  // groups: scala.collection.immutable.Map[String,Array[Int]] =
-  //    Map(g3 -> Array(10, 11, 12, 13, 14),
-  //        g2 -> Array(5, 6, 7, 8, 9),
-  //        g1 -> Array(1, 2, 3, 4),
-  //        g4 -> Array(15, 16, 17, 18, 19, 20))
-  groups.foreach(group => println(group._1 + " => " + group._2.mkString(", ")))
-
-  val mods = (1 to 20).toArray groupBy(_ % 4)
-  mods.foreach(mod => println(mod._1 + " => " + mod._2.mkString(", ")))
-
-  /**
-   * def partition(p: (T) ⇒ Boolean): (Array[T], Array[T])
-   * Partitions this mutable indexed sequence in two mutable indexed
-   * sequences according to a predicate.
-   */
-  val numbers1 = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-  // numbers1: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-  val parts = numbers1.partition(_ % 2 == 0)
-  // parts: (Array[Int], Array[Int]) = (Array(2, 4, 6, 8, 10),Array(1, 3, 5, 7, 9))
-  println(parts._1.mkString(", "))
-  println(parts._2.mkString(", "))
-
-  /**
    * def permutations: collection.Iterator[Array[T]]
    *
    * Iterates over distinct permutations.
@@ -309,41 +345,4 @@ object Array extends App {
   val permsMap = perms.map(arr => arr.mkString)
   // permsMap: Array[String] = Array(123, 132, 213, 231, 312, 321)
   println(permsMap.mkString(", "))
-
-  /**
-   * def reduce[A1 >: A](op: (A1, A1) => A1): A1
-   *
-   * Reduces the elements of this mutable indexed sequence using the specified
-   * associative binary operator.
-   */
-  val aoChars = Array("A", "B", "C")
-  // aoChars: Array[String] = Array(A, B, C)
-  println(aoChars.reduce(_ + _)) // "ABC"
-
-  val aoNums = Array(12, 6, 15, 2, 20, 9)
-  println(aoNums.reduce(_ min _)) // 2
-  println(aoNums.reduce(_ max _)) // 20
-  println(aoNums.reduce(_ + _)) // 64
-
-  val peeps = Vector("al", "hannah", "emily", "christina", "aleka")
-  val peepsMax = peeps.reduce((x, y) => if(x.length > y.length) x else y)
-  println(peepsMax)
-
-  /**
-   * def reduceLeft[B >: A](op: (B, T) => B): B
-   * Applies a binary operator to all elements of this mutable indexed sequence,
-   * going left to right.
-   *
-   * def reduceRight[B >: A](op: (T, B) => B): B
-   * Applies a binary operator to all elements of this mutable indexed sequence,
-   * going right to left.
-   */
-  // calculate min value from collection
-  val aoStrs = Array("one", "two", "three")
-  val leftMin = aoStrs.reduceLeft((result, element) =>
-                    if (element.length < result.length) element else result)
-  println(leftMin)
-  val rightMin = aoStrs.reduceRight((element, result) =>
-                    if (element.length < result.length) element else result)
-  println(rightMin)
 }
