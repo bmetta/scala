@@ -1,5 +1,5 @@
 object functions extends App {
-  // anonymous function (i.e. no name) that returns integer + 1
+  // anonymous function (i.e. no name), that returns integer + 1
   (x: Int) => x + 1
 
   // function with name
