@@ -13,11 +13,15 @@ class Stack[A] {
   }
 }
 
-abstract class Fruit(name: String) {
-  def getName = name
+abstract class Fruit {
+  def name: String
 }
-class Banana(name: String) extends Fruit(name)
-class Apple(name: String) extends Fruit(name)
+class Banana extends Fruit {
+  override def name: String = "banana"
+}
+class Apple extends Fruit {
+  override def name: String = "apple"
+}
 
 object GenericClass extends App {
   val stack = new Stack[Int]
@@ -28,8 +32,8 @@ object GenericClass extends App {
 
 
   val fruitStack = new Stack[Fruit]
-  fruitStack.push(new Banana("banana"))
-  fruitStack.push(new Apple("apple"))
-  println(fruitStack.pop.getName)
-  println(fruitStack.pop.getName)
+  fruitStack.push(new Banana)
+  fruitStack.push(new Apple)
+  println(fruitStack.pop.name)
+  println(fruitStack.pop.name)
 }
