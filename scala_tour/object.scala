@@ -1,6 +1,7 @@
 /**
  * Objects aer single instances of their own definitions.
  * Think of them as singletons of their own classes
+ * It is created lazily when it is referenced
  */
 
 object IdFactory {

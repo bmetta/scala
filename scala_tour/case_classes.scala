@@ -1,6 +1,7 @@
 /**
  * case classes are immutable and compared by value
- * instantiate case classes without new keyword
+ * case classes are good for modeling immutable data
+ * used for pattern matching
  */
 case class Point(x: Int, y: Int)
 
