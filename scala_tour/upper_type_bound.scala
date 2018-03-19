@@ -3,6 +3,13 @@
  * 
  * An upper type bound T <: A declares that type variable T refers to a
  * subtype of type A
+ * 
+ *         Animal
+ *         /    \
+ *        /      \
+ *      Pet     Lion
+ *      / \
+ *    Cat Dog
  */
 abstract class Animal {
   def name: String
@@ -20,6 +27,8 @@ class Lion extends Animal {
   override def name: String = "Lion"
 }
 
+// class PetContainer take a type parameter P which must be a subtype of Pet.
+// Dog and Cat are subtypes of Pet
 class PetContainer[P <: Pet](p: P) {
   def pet: P = p
 }
@@ -27,4 +36,5 @@ class PetContainer[P <: Pet](p: P) {
 object UpperTypeBound extends App {
   val dogContainer = new PetContainer[Dog](new Dog)
   val catContainer = new PetContainer[Cat](new Cat)
+  // PetContainer[Lion], we would get the Error
 }
