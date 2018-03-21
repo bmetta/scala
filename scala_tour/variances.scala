@@ -95,19 +95,11 @@ object ContravarianceTest extends App {
 
 
 /********************************************************************
- * Invariant
- * -------------
- *  If 'S' is subtype of 'T' then List[T] and List[S] are unrelated
+ * Invariant: class Parking[A]
+ * ---------
+ *  Car <: Vehicle    Parking[Car] !<: Parking[Vehicle]
  */
-
-/**
- *   Vehicle     Parking[Vehicle]
- *      |               |
- *     Car         Parking[Car]
- *
- *  class Parking[A]
- */
-
+/*
 class Vehicle
 class Car extends Vehicle
 case class Parking[A](value: A)
@@ -121,7 +113,32 @@ object InvariantTest extends App {
 
   val p2: Parking[Vehicle] = Parking[Vehicle](new Car)
 }
+*/
 
 /**
  * Covariance: class Parking[+A]
+ * ----------
+ *  if Car <: Vehicle Then Parking[Car] <: Parking[Vehicle]
  */
+/*
+class Vehicle
+class Car extends Vehicle
+case class Parking[+A](value: A)
+
+object CovariantTest extends App {
+  val p1: Parking[Vehicle] = Parking[Car](new Car)
+}
+*/
+
+/**
+ * Contravariance: class Parking[-A]
+ * ----------
+ *  if Car <: Vehicle Then Parking[Vehicle] <: Parking[Car]
+ */
+class Vehicle
+class Car extends Vehicle
+case class Parking[-A]()
+
+object ContravariantTest extends App {
+  val p1: Parking[Car] = Parking[Vehicle]()
+}
