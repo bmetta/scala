@@ -31,12 +31,12 @@
  *     |        |
  *    Puppy   Animal[Puppy]
  */
+/*
 class Dog
 class Puppy extends Dog
 
 class Animal[+T](val animal: T)
 class AnimalCarer(val dog: Animal[Dog])
-/*
 object CovariantTest extends App {
   val dogAnimal = new Animal[Dog](new Dog)
   val puppyAnimal = new Animal[Puppy](new Puppy)
@@ -70,6 +70,7 @@ object CovariantTest extends App {
  *    Int         AnyVal
  */
 
+/*
 abstract class Type[-T] {
   def typeName: Unit
 }
@@ -85,7 +86,6 @@ class TypeCarer {
   def display(t: Type[Int]) { t.typeName }
 }
 
-/*
 object ContravarianceTest extends App {
   val typeCarer = new TypeCarer
   typeCarer.display(new SuperType)
@@ -135,6 +135,7 @@ object CovariantTest extends App {
  * ----------
  *  if Car <: Vehicle Then Parking[Vehicle] <: Parking[Car]
  */
+/*
 class Vehicle
 class Car extends Vehicle
 case class Parking[-A]()
@@ -142,3 +143,12 @@ case class Parking[-A]()
 object ContravariantTest extends App {
   val p1: Parking[Car] = Parking[Vehicle]()
 }
+*/
+
+/**
+ * Covariant and contravariant positions
+ *
+ *        Animal          Pets[Animal]
+ *       /      \         /          \
+ *      Cat     Dog     Pets[Cat]   Pets[Dog]
+ */
