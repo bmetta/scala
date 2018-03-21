@@ -50,7 +50,6 @@ object CovariantTest extends App {
 }
 */
 
-
 /**
  * Contravariant
  * -------------
@@ -64,10 +63,10 @@ object CovariantTest extends App {
  *  syntax => List[-T]
  *
  *  example:
- *    AnyVal       Int
+ *    AnyVal     Type[Int]
  *     ^            ^
  *     |            |
- *    Int         AnyVal
+ *    Int       Type[AnyVal]
  */
 
 /*
@@ -122,28 +121,28 @@ object InvariantTest extends App {
  */
 /*
 class Vehicle
-class Car extends Vehicle
-case class Parking[+A](value: A)
+class Car extends Vehicle // Car <: Vehicle
+case class Parking[+A](value: A)  // +A means Parking[Car] <: Parking[Vehicle]
 
 object CovariantTest extends App {
   val p1: Parking[Vehicle] = Parking[Car](new Car)
+  // p1: Parking[Vehicle] = Parking(Car@554cd74a)
 }
 */
 
 /**
  * Contravariance: class Parking[-A]
  * ----------
- *  if Car <: Vehicle Then Parking[Vehicle] <: Parking[Car]
+ *  if Vehicle >: Car Then Parking[Vehicle] <: Parking[Car]
  */
-/*
 class Vehicle
-class Car extends Vehicle
-case class Parking[-A]()
+class Car extends Vehicle // Vehicle >: Car
+case class Parking[-A]()  // -A means Parking[Vehicle] <: Parking[Car]
 
 object ContravariantTest extends App {
   val p1: Parking[Car] = Parking[Vehicle]()
 }
-*/
+
 
 /**
  * Covariant and contravariant positions
