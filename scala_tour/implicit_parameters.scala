@@ -1,0 +1,2 @@
+object ImplicitParameters extends App {
+}
