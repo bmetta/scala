@@ -36,7 +36,7 @@ class Parking4[A >: Jeep](val place: A)
 
 class Parking5[A >: Bicycle <: Vehicle](val place: A)
 
-object typebounds extends App {
+object Typebounds extends App {
   new Parking[Motorcycle](new Motorcycle) // works
   //new Parking[Motorcycle](new Car) // compiler error; Car and Motorcycle are not the same type
 
@@ -53,7 +53,7 @@ object typebounds extends App {
    *
    * val a: Parking; means 'a' must be an instance of Parking or a subtype of Parking
    * In the type scenario
-   *   Parking[A <: Vehicle](val place: A); means 'A' type must be type or subtype of Vehicle
+   *   Parking3[A <: Vehicle](val place: A); means 'A' type must be type or subtype of Vehicle
    */
   new Parking3(new Vehicle)
   new Parking3(new Car)

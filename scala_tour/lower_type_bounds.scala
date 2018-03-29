@@ -7,7 +7,7 @@
  *           /        \                 /        \
  *       ListNode[+B] Nil[+B]       African     European
  *     (case class) (case class)    Swallow     Swallow
- *       head                      (case class) (case class)
+ *       head                      
  *       tail
  *
  *  Nil reprasents an empty element (i.e. an empty list)
@@ -19,10 +19,7 @@ trait Node[+B] {
   //def prepend[B](element: B): Node[B]
   def foreach(f: (B) => Unit): Unit = {
     this match {
-      case ListNode(head, tail) => {
-        f(head)
-        tail.foreach(f)
-      }
+      case ListNode(head, tail) => { f(head); tail.foreach(f) }
       case Nil() => {}
     }
   }
@@ -49,11 +46,20 @@ class AfricanSwallowChild() extends AfricanSwallow
 class EuropeanSwallowChild() extends EuropeanSwallow
 
 object LowerTypeBoundsTest extends App {
+  /*
   val africanSwallowList = ListNode[AfricanSwallow](new AfricanSwallow, Nil())
   var birdList: Node[Bird] = africanSwallowList
   birdList = birdList.prepend(new AfricanSwallowChild)
   birdList = birdList.prepend(new EuropeanSwallow)
   birdList = birdList.prepend(new EuropeanSwallowChild)
   println(birdList)
-  //birdList.foreach(println)
+  */
+  var birdList = ListNode(new AfricanSwallow, Nil())
+  birdList = birdList.prepend(new AfricanSwallowChild)
+  val birdList1 = birdList.prepend(new EuropeanSwallow)
+  val birdList2 = birdList1.prepend(new EuropeanSwallowChild)
+  println(birdList)
+  println(birdList1)
+  println(birdList2)
+  birdList2.foreach(println)
 }
