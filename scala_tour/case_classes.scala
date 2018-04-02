@@ -14,11 +14,12 @@ object CaseClasses extends App {
     println("p1 equal p2")
   } else {
     println("p1 not equal p2")
-  }
+  } // p1 equal p2
 
   if (p1 == p3) {
     println("p1 equal p3")
   } else {
     println("p1 not equal p3")
-  }
+  } // p1 not equal p3
+
 }

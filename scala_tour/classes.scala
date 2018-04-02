@@ -31,7 +31,7 @@ class Point {
 
 object Class extends App {
   val greeter = new Greeter("Hello ", "!")
-  greeter.greet("Developer")
+  greeter.greet("Developer") // Hello Developer!
 
   val p = new Point
   p.x = 10
